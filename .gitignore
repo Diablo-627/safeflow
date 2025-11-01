@@ -1,0 +1,82 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.manifest
+*.spec
+
+# === Virtual environments ===
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# === IDEs / Editors ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# === OS / Temp files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Logs ===
+*.log
+logs/
+*.out
+
+# === Jupyter / experiments ===
+.ipynb_checkpoints/
+*.ipynb_convert/
+*.ipynb_save/
+
+# === Cache / testing ===
+.pytest_cache/
+.cache/
+coverage/
+htmlcov/
+*.cover
+*.coverage
+*.dat
+*.tmp
+
+# === Docker / Kubernetes ===
+*.pid
+docker-compose.override.yml
+.env
+.env.*
+
+# === Project specific ===
+# (ML модели и данные — исключаем большие файлы)
+ml/experiments/
+ml/models/
+ml/data/
+*.pkl
+*.joblib
+*.h5
+*.csv
+*.parquet
+*.npy
+*.npz
