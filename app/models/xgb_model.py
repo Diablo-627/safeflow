@@ -1,25 +1,28 @@
-# app/models/xgb_model.py
-# Wrapper for a real model file (to be implemented by ML owner)
-import logging
-from typing import List, Dict, Optional
+import joblib
+import pandas as pd
+import os
 
-logger = logging.getLogger("xgb_model")
+# Загружаем модель и метаданные
+MODEL_PATH = "app/models/xgb_v1.joblib"
+META_PATH = "app/models/xgb_v1.meta.json"
 
-class XGBModelWrapper:
-    def __init__(self, path: str):
-        self.path = path
-        self.loaded = False
-        self.model = None
+model = joblib.load(MODEL_PATH)
+meta = pd.read_json(META_PATH, typ="series")
 
-    def load(self):
-        # Placeholder - actual loading (xgboost / joblib) to be implemented
-        logger.info("XGBModelWrapper.load called for path=%s (not implemented)", self.path)
-        self.loaded = True
+def predict(data: pd.DataFrame):
+    """Возвращает предсказания вероятности для входных данных"""
+    # Убедимся, что все нужные фичи есть
+    missing = [f for f in meta["features"] if f not in data.columns]
+    if missing:
+        raise ValueError(f"Отсутствуют признаки: {missing}")
 
-    def predict(self, features: List[Dict]) -> List[float]:
-        # If model is not loaded, return stub
-        if not self.loaded:
-            return [0.05 for _ in features]
-        # else actual predict logic
-        return [0.05 for _ in features]
-# Note: This is a stub implementation. The real model loading and prediction logic
+    preds = model.predict_proba(data[meta["features"]])[:, 1]
+    return preds
+
+# Пример использования:
+if __name__ == "__main__":
+    test = pd.DataFrame([
+        {"sensor_1": 20, "sensor_2": 10, "sensor_3": 6},
+        {"sensor_1": 8, "sensor_2": 3, "sensor_3": 2}
+    ])
+    print(predict(test))
