@@ -1,4 +1,5 @@
-version: "3.8"
+version: '3.8'
+
 services:
   app:
     build:
@@ -9,18 +10,22 @@ services:
     env_file:
       - .env
     volumes:
-      - ./:/app:rw      # bind mount for development (code changes reflected)
+      - ./:/app:rw          # bind mount для dev (изменения кода сразу отражаются)
+      - tmp_app:/app/tmp     # tmp volume для временных файлов
     depends_on:
       - 1c_stub
-    command: >
-      python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   1c_stub:
     image: python:3.11-slim
     volumes:
-      - ./:/app:ro
+      - ./:/app:rw           # исправлено: убран лишний пробел
+      - tmp_1c:/app/tmp      # tmp volume для временных файлов
     working_dir: /app/safeflow/infra/1c_stub
-    command: >
-      python -m uvicorn main:app --host 0.0.0.0 --port 9001
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 9001
     ports:
       - "9001:9001"
+
+volumes:
+  tmp_app:
+  tmp_1c:

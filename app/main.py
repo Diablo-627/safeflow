@@ -11,9 +11,11 @@ app.include_router(predict.router)
 
 @app.get("/", tags=["root"])
 def root():
-    return {"message": "Hello World", "status": "API is working!"}
+    return {"message": "Welcome to SafeFlow API"}
 
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=settings.APP_HOST, port=settings.APP_PORT)
+    
+    
