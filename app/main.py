@@ -13,3 +13,4 @@ def startup_event():
     from app.services.ml_service import MLService
     MLService.get_instance().warmup()
     print("Application startup: Model warmed up.")
+    print(f"Application settings: {settings.dict()}")
