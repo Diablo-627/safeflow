@@ -1,13 +1,19 @@
+# app/main.py
 from fastapi import FastAPI
+from app.config import settings
+from app.routes import health, predict
 
-app = FastAPI()
+app = FastAPI(title="SafeFlow", version="0.1.0")
 
-# Добавь этот endpoint
-@app.get("/")
-async def root():
+# include routers
+app.include_router(health.router)
+app.include_router(predict.router)
+
+@app.get("/", tags=["root"])
+def root():
     return {"message": "Hello World", "status": "API is working!"}
 
-# Остальные твои endpoints...
-@app.get("/items/")
-async def read_items():
-    return [{"item": "Item 1"}, {"item": "Item 2"}]
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host=settings.APP_HOST, port=settings.APP_PORT)

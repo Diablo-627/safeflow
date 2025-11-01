@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./:/app:rw      # bind mount for development (code changes reflected)
+    depends_on:
+      - 1c_stub
+    command: >
+      python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  1c_stub:
+    image: python:3.11-slim
+    volumes:
+      - ./:/app:ro
+    working_dir: /app/safeflow/infra/1c_stub
+    command: >
+      python -m uvicorn main:app --host 0.0.0.0 --port 9001
+    ports:
+      - "9001:9001"
